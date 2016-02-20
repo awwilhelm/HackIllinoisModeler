@@ -77,7 +77,8 @@ namespace Modeler
 
             for(int i = 0; i < verticesSize; i++)
             {
-                Instantiate(vertex, vertices[i], Quaternion.identity);
+                Vector3 worldSpace = new Vector3(vertices[i].x + transform.position.x, vertices[i].y + transform.position.y, vertices[i].z + transform.position.z);
+                Instantiate(vertex, worldSpace, Quaternion.identity);
             }
 
             mesh.vertices = vertices;
