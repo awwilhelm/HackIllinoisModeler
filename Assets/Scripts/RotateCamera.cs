@@ -6,9 +6,11 @@ public class RotateCamera : GameBehavior {
 
 	public float scrollConstant = 4;
 	public float transformConstant = 1.0F;
-	public float rotationConstant = 100.0F;
+	public float rotationConstant = 6.0F;
 
 	private Vector3 mouseOrigin;
+
+	float zRot = 0;
 
 	float scrollWheelValue = 0;
 
@@ -20,16 +22,18 @@ public class RotateCamera : GameBehavior {
 	// Update is called once per frame
 	void Update () {
 		// rotate
+		transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, zRot);
 
 		if (Input.GetMouseButtonDown(0)) {
 			mouseOrigin = Input.mousePosition;
 		}
 
 		if (Input.GetMouseButton(0)) {
-			Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
+			float rotateX = Input.GetAxis("Mouse X") * rotationConstant;
+			float rotateY = Input.GetAxis("Mouse Y") * rotationConstant;
 
-			transform.RotateAround(transform.position, transform.right, -pos.y * rotationConstant);
-			transform.RotateAround(transform.position, Vector3.up, pos.x * rotationConstant);
+			transform.Rotate(new Vector3(rotateY, -rotateX, 0));
+
 		}
 		// pan
 		if (Input.GetMouseButton(1)) {
