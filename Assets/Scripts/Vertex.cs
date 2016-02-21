@@ -8,6 +8,7 @@ namespace Modeler
         private bool isSelected;
         public Material normalMat;
         public Material selectedMat;
+        private Vector3 startingPosition;
 
         private MeshRenderer meshRenderer;
         
@@ -34,5 +35,14 @@ namespace Modeler
             return isSelected;
         }
 
+        public void SetStartingPosition()
+        {
+            startingPosition = transform.position;
+        }
+
+        public Vector3 GetStartingPosition()
+        {
+            return startingPosition;
+        }
     }
 }

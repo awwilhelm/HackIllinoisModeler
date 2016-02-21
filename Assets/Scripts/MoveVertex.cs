@@ -9,7 +9,6 @@ namespace Modeler
     {
         public GameObject moveTool;
         public GameObject meshGameObject;
-        private Vector3 startinPosVert;
         private List<GameObject> selectedVerts;
         private GameObject moveToolInstance;
         private bool buttonDown;
@@ -34,11 +33,15 @@ namespace Modeler
                 buttonDown = true;
                 if (selectedVerts.Count > 0)
                 {
+
                     Vector3 v3 = Input.mousePosition;
                     v3.z = selectedVerts[0].transform.position.z;
                     v3 = Camera.main.ScreenToWorldPoint(v3);
                     mouseStartingSpot = v3;
-                    startinPosVert = selectedVerts[0].transform.position;
+                    for(int i = 0; i<selectedVerts.Count; i++)
+                    {
+                        selectedVerts[i].GetComponent<Vertex>().SetStartingPosition();
+                    }
                 }
             }
             if(Input.GetMouseButtonUp(0))
@@ -86,15 +89,20 @@ namespace Modeler
             v3.z = selectedVerts[0].transform.position.z;
             v3 = Camera.main.ScreenToWorldPoint(v3);
 
-            if(moveXAxis)
+            for (int i = 0; i < selectedVerts.Count; i++)
             {
-                selectedVerts[0].transform.position = new Vector3(startinPosVert.x + mouseStartingSpot.x - v3.x, selectedVerts[0].transform.position.y, selectedVerts[0].transform.position.z);
-            } else if (moveYAxis)
-            {
-                selectedVerts[0].transform.position = new Vector3(selectedVerts[0].transform.position.x, startinPosVert.y + mouseStartingSpot.y - v3.y, selectedVerts[0].transform.position.z);
-            } else if (moveZAxis)
-            {
-                selectedVerts[0].transform.position = new Vector3(selectedVerts[0].transform.position.x, selectedVerts[0].transform.position.y, startinPosVert.z + mouseStartingSpot.z -v3.z);
+                if (moveXAxis)
+                {
+                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().x + mouseStartingSpot.x - v3.x, selectedVerts[i].transform.position.y, selectedVerts[i].transform.position.z);
+                }
+                else if (moveYAxis)
+                {
+                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].transform.position.x, selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().y + mouseStartingSpot.y - v3.y, selectedVerts[i].transform.position.z);
+                }
+                else if (moveZAxis)
+                {
+                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].transform.position.x, selectedVerts[i].transform.position.y, selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().z + mouseStartingSpot.z - v3.z);
+                }
             }
 
 
