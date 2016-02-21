@@ -22,7 +22,7 @@ public class ManipulateObjects : GameBehavior {
 
 		if (carryingObject) {
 			carriedObject.transform.position = Vector3.Lerp(carriedObject.transform.position, transform.position + transform.forward * carryDistance, Time.deltaTime * smooth);
-			if (Input.GetMouseButtonDown(0)) {
+			if (Input.GetMouseButtonDown(1)) {
 				carryingObject = false;
 				carriedObject.GetComponent<Renderer>().material.SetColor("_OutlineColor", Color.black);
 				carriedObject.GetComponent<SphereCollider>().enabled = true;
@@ -31,7 +31,7 @@ public class ManipulateObjects : GameBehavior {
 		} else {
 			Ray ray = GetComponent<Camera>().ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height /2));
 			RaycastHit hit;
-			if (Input.GetMouseButtonDown(0)) {
+			if (Input.GetMouseButtonDown(1)) {
 				if (carryingObject) {
 					carryingObject = false;
 					carriedObject = null;
@@ -52,7 +52,7 @@ public class ManipulateObjects : GameBehavior {
 				}
 			}
 		}
-		if (Input.GetMouseButtonDown(1)) {
+		if (Input.GetMouseButtonDown(0)) {
 			Instantiate(ballPrefab, transform.position + (transform.forward * 2), Quaternion.identity);
 		}
 	}
