@@ -42,6 +42,9 @@ namespace Modeler
                     }
 
                 }
+            } else
+            {
+                ClearVertexFromSelected();
             }
         }
 
@@ -53,6 +56,15 @@ namespace Modeler
         void RemoveVertextFromSelected(GameObject vertex)
         {
             selectedVertices.Remove(vertex);
+        }
+
+        void ClearVertexFromSelected()
+        {
+            for(int i = 0; i< selectedVertices.Count; i++)
+            {
+                selectedVertices[i].GetComponent<Vertex>().SetSelected(false);
+            }
+            selectedVertices.Clear();
         }
 
         public List<GameObject> GetSelected()

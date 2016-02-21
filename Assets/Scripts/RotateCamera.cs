@@ -24,11 +24,7 @@ public class RotateCamera : GameBehavior {
 		// rotate
 		transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, zRot);
 
-		if (Input.GetMouseButtonDown(0)) {
-			mouseOrigin = Input.mousePosition;
-		}
-
-		if (Input.GetMouseButton(0)) {
+		if (Input.GetMouseButton(1)) {
 			float rotateX = Input.GetAxis("Mouse X") * rotationConstant;
 			float rotateY = Input.GetAxis("Mouse Y") * rotationConstant;
 
@@ -36,7 +32,7 @@ public class RotateCamera : GameBehavior {
 
 		}
 		// pan
-		if (Input.GetMouseButton(1)) {
+		if (Input.GetMouseButton(2) && Input.GetButton("leftAlt")) {
 
 			float transformX = Input.GetAxis("Mouse X") * transformConstant * -1;
 			float transformY = Input.GetAxis("Mouse Y") * transformConstant * -1;

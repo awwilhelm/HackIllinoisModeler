@@ -8,6 +8,7 @@ namespace Modeler
     {
         public int xSize, ySize, zSize;
         public GameObject vertex;
+        public GameObject vertexCollectionGameObject;
 
         private Mesh mesh;
         private Vector3[] vertices;
@@ -20,12 +21,42 @@ namespace Modeler
             Generate();
         }
 
-        private void Generate()
+        public void Generate()
         {
             GetComponent<MeshFilter>().mesh = mesh = new Mesh();
             mesh.name = "Procedural Cube";
             CreateVertices();
             CreateTriangles();
+        }
+
+        public void RecalcVertices()
+        {
+
+            int cornerVertices = 8;
+            int edgeVertices = (xSize + ySize + zSize - 3) * 4;
+            int faceVertices = (
+                (xSize - 1) * (ySize - 1) +
+                (xSize - 1) * (zSize - 1) +
+                (ySize - 1) * (zSize - 1)) * 2;
+
+            int verticesSize = cornerVertices + edgeVertices + faceVertices;
+            vertices = new Vector3[verticesSize];
+            Vector3[] tempVert = new Vector3[verticesSize];
+            tempVert = mesh.vertices;
+
+            int v = 0;
+
+            for (int i = 0; i < verticesSize; i++)
+            {
+                Vector3 childPos = vertexCollectionGameObject.transform.GetChild(v).transform.position;
+                Vector3 worldSpace = new Vector3(childPos.x - transform.position.x, childPos.y - transform.position.y, childPos.z - transform.position.z);
+                vertices[v] = worldSpace;
+                v++;
+            }
+
+
+            mesh.vertices = vertices;
+            //CreateTriangles();
         }
 
         private void CreateVertices()
@@ -75,10 +106,12 @@ namespace Modeler
                 }
             }
 
-            for(int i = 0; i < verticesSize; i++)
+
+            for (int i = 0; i < verticesSize; i++)
             {
                 Vector3 worldSpace = new Vector3(vertices[i].x + transform.position.x, vertices[i].y + transform.position.y, vertices[i].z + transform.position.z);
-                Instantiate(vertex, worldSpace, Quaternion.identity);
+                GameObject temp = Instantiate(vertex, worldSpace, Quaternion.identity) as GameObject;
+                temp.transform.parent = vertexCollectionGameObject.transform;
             }
 
             mesh.vertices = vertices;
