@@ -17,6 +17,8 @@ namespace Modeler
         private bool moveZAxis;
         private Vector3 mouseStartingSpot;
 
+        private const float MOVE_MULTIPLIER = 12;
+
         void Start()
         {
             selectedVerts = GetComponent<SelectVertex>().GetSelected();
@@ -36,6 +38,7 @@ namespace Modeler
 
                     Vector3 v3 = Input.mousePosition;
                     v3.z = selectedVerts[0].transform.position.z;
+                    v3.z = Camera.main.nearClipPlane;
                     v3 = Camera.main.ScreenToWorldPoint(v3);
                     mouseStartingSpot = v3;
                     for(int i = 0; i<selectedVerts.Count; i++)
@@ -85,23 +88,27 @@ namespace Modeler
             //Waits 1 frame
             yield return 0;
 
-            Vector3 v3 = Input.mousePosition;
-            v3.z = selectedVerts[0].transform.position.z;
-            v3 = Camera.main.ScreenToWorldPoint(v3);
 
             for (int i = 0; i < selectedVerts.Count; i++)
             {
+                Vector3 v3 = Input.mousePosition;
+                print("hiiii      " + v3);
+                v3.z = selectedVerts[i].transform.position.z;
+                v3.z = Camera.main.nearClipPlane;
+                v3 = Camera.main.ScreenToWorldPoint(v3);
                 if (moveXAxis)
                 {
-                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().x + mouseStartingSpot.x - v3.x, selectedVerts[i].transform.position.y, selectedVerts[i].transform.position.z);
+                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().x - (mouseStartingSpot.x - v3.x) * MOVE_MULTIPLIER, selectedVerts[i].transform.position.y, selectedVerts[i].transform.position.z);
                 }
                 else if (moveYAxis)
                 {
-                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].transform.position.x, selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().y + mouseStartingSpot.y - v3.y, selectedVerts[i].transform.position.z);
+                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].transform.position.x, selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().y - (mouseStartingSpot.y - v3.y)*MOVE_MULTIPLIER, selectedVerts[i].transform.position.z);
                 }
                 else if (moveZAxis)
                 {
-                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].transform.position.x, selectedVerts[i].transform.position.y, selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().z + mouseStartingSpot.z - v3.z);
+                    selectedVerts[i].transform.position = new Vector3(selectedVerts[i].transform.position.x, selectedVerts[i].transform.position.y, 
+                        selectedVerts[i].GetComponent<Vertex>().GetStartingPosition().z - (mouseStartingSpot.z - v3.z) * MOVE_MULTIPLIER);
+
                 }
             }
 
