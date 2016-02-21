@@ -45,6 +45,7 @@ public class RotateCamera : GameBehavior {
 
 			transform.Translate(new Vector3(transformX, transformY, 0));
 		}
+
 		scrollWheelValue = Input.GetAxis("Mouse ScrollWheel") * scrollConstant;
 		//zoom
 		transform.Translate(transform.forward * scrollWheelValue);
