@@ -14,6 +14,8 @@ public class RotateCamera : GameBehavior {
 
 	float scrollWheelValue = 0;
 
+	public GameObject pivotPoint;
+
 	// Use this for initialization
 	void Start () {
 
@@ -23,13 +25,17 @@ public class RotateCamera : GameBehavior {
 	void Update () {
 		// rotate
 		transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, zRot);
-
+        
 		if (Input.GetMouseButton(1)) {
 			float rotateX = Input.GetAxis("Mouse X") * rotationConstant;
 			float rotateY = Input.GetAxis("Mouse Y") * rotationConstant;
 
-			transform.Rotate(new Vector3(rotateY, -rotateX, 0));
-
+			if (Input.GetKey(KeyCode.LeftShift)) {
+				Debug.Log("pivot");
+				transform.RotateAround(pivotPoint.transform.position, Vector3.up, rotateX);
+			} else {
+				transform.Rotate(new Vector3(rotateY, -rotateX, 0));
+			}
 		}
 		// pan
 		if (Input.GetMouseButton(2) && Input.GetButton("leftAlt")) {
@@ -39,6 +45,7 @@ public class RotateCamera : GameBehavior {
 
 			transform.Translate(new Vector3(transformX, transformY, 0));
 		}
+
 		scrollWheelValue = Input.GetAxis("Mouse ScrollWheel") * scrollConstant;
 		//zoom
 		transform.Translate(transform.forward * scrollWheelValue);
