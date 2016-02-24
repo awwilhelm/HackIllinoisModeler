@@ -54,7 +54,8 @@ public class MenuManager : MonoBehaviour {
 	bool menuStatus = false;
 
 	public bool getMenuStatus () {
-		return this.menuStatus;
+		Debug.Log(menuStatus);
+		return menuStatus;
 	}
 
 	private bool changingMenuStatus = false;	
