@@ -5,10 +5,7 @@ public class MenuManager : MonoBehaviour {
 
 
 	bool playing = false;
-	
-	GameObject[] balls;
-	Vector3[] ballInitialStates;
-		
+			
 	Vector3 menuPosition = new Vector3(0, 280, 0);
 	Vector3 menuOldPosition;
 	
@@ -39,7 +36,6 @@ public class MenuManager : MonoBehaviour {
 		
 		
 		if (changingMenuStatus) {
-			Debug.Log(perc);
 			if (movingTowardsMenu) {
 				transform.position = Vector3.Lerp(transform.position, menuPosition, perc);
 			}
@@ -56,7 +52,11 @@ public class MenuManager : MonoBehaviour {
 	}
 	
 	bool menuStatus = false;
-	
+
+	public bool getMenuStatus () {
+		return this.menuStatus;
+	}
+
 	private bool changingMenuStatus = false;	
 	private float timeStartedLerping;
 	bool movingTowardsMenu;
@@ -68,11 +68,12 @@ public class MenuManager : MonoBehaviour {
 			Debug.Log ("going to menu");
 			menuOldPosition = transform.position;
 			GetComponent<Rigidbody>().useGravity = false;
+			GetComponent<CapsuleCollider>().enabled = false;
 		}
 		//leave menu
 		if (!movingTowardsMenu) {
-			Debug.Log ("leaving menu");
 			GetComponent<Rigidbody>().useGravity = true;
+			GetComponent<CapsuleCollider>().enabled = true;
 		}
 	}
 	

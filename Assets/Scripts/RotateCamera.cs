@@ -2,7 +2,7 @@
 using System.Collections;
 using Modeler;
 
-public class MouseLook : GameBehavior {
+public class RotateCamera : GameBehavior {
 
 	public float scrollConstant = 4;
 	public float transformConstant = 1.0F;
@@ -26,11 +26,11 @@ public class MouseLook : GameBehavior {
 		// rotate
 		transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, zRot);
 
-		if (Input.GetMouseButton(0)) {
+		if (Input.GetMouseButton(1)) {
 			float rotateX = Input.GetAxis("Mouse X") * rotationConstant;
 			float rotateY = Input.GetAxis("Mouse Y") * rotationConstant;
 
-			if (Input.GetKey(KeyCode.LeftShift)) {
+			if (Input.GetKeyDown(KeyCode.LeftAlt)) {
 				Debug.Log("pivot");
 				transform.RotateAround(pivotPoint.transform.position, Vector3.up, rotateX);
 			} else {
@@ -38,7 +38,7 @@ public class MouseLook : GameBehavior {
 			}
 		}
 		// pan
-		if (Input.GetMouseButton(1)) {
+		if (Input.GetMouseButton(0)) {
 
 			float transformX = Input.GetAxis("Mouse X") * transformConstant * -1;
 			float transformY = Input.GetAxis("Mouse Y") * transformConstant * -1;
@@ -48,6 +48,6 @@ public class MouseLook : GameBehavior {
 
 		scrollWheelValue = Input.GetAxis("Mouse ScrollWheel") * scrollConstant;
 		//zoom
-		transform.Translate(transform.forward * scrollWheelValue);
+		transform.position += transform.forward * scrollWheelValue;
 	}
 }

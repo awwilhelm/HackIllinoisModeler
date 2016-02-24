@@ -34,17 +34,10 @@ public class CharacterControls : MonoBehaviour {
 	        velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
 	        velocityChange.y = 0;
 	        GetComponent<Rigidbody>().AddForce(velocityChange, ForceMode.VelocityChange);
- 
-	        // Jump
-	        if (canJump && Input.GetButton("Jump")) {
-	            GetComponent<Rigidbody>().velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
-	        }
 	    }
  
 	    // We apply gravity manually for more tuning control
-	    GetComponent<Rigidbody>().AddForce(new Vector3 (0, -gravity * GetComponent<Rigidbody>().mass, 0));
  
-	    grounded = false;
 	}
  
 	void OnCollisionStay () {
