@@ -118,6 +118,8 @@ public abstract class Tool {
 }
 
 public class BallPlacer: Tool {
+	public override string name {get; set;}
+	public override void Use() {}
 	public BallPlacer () {
 		this.name = "BallPlacer";
 	}
